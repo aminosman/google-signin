@@ -58,6 +58,9 @@ RCT_EXPORT_METHOD(configure:(NSDictionary *)options
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
   NSString *path = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist"];
+  if ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"FirebaseDir"] != nil) {
+    path = [[NSBundle mainBundle] pathForResource:@"GoogleService-Info" ofType:@"plist" inDirectory:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"FirebaseDir"]];
+  }
 
   if (!options[@"iosClientId"] && !path) {
     NSString* message = @"RNGoogleSignin: failed to determine clientID - GoogleService-Info.plist was not found and iosClientId was not provided. To fix this error: if you have GoogleService-Info.plist file (usually downloaded from firebase) place it into the project as seen in the iOS guide. Otherwise pass iosClientId option to configure()";
